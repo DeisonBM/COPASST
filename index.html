@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio de Concentración Mental - La técnica de los dos minutos 🧠⏰</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 60%;
+            max-width: 1200px;
+        }
+        h1, h2 {
+            color: #228B22;
+            text-align: center;
+        }
+        .description {
+            background-color: #e9f5e9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .clock {
+            width: 300px;
+            height: 300px;
+            border: 15px solid #228B22;
+            border-radius: 50%;
+            margin: 30px auto;
+            position: relative;
+            background: white;
+        }
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            border-radius: 5px;
+        }
+        #hour-hand {
+            width: 8px;
+            height: 25%;
+            background: #228B22;
+        }
+        #minute-hand {
+            width: 6px;
+            height: 35%;
+            background: #444;
+        }
+        #second-hand {
+            width: 2px;
+            height: 40%;
+            background: #ff0000;
+        }
+        .number {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #228B22;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 20px;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-button {
+            background-color: #228B22;
+        }
+        #start-button:hover {
+            background-color: #1a6b1a;
+        }
+        #cancel-button {
+            background-color: #d9534f;
+            display: none;
+        }
+        #cancel-button:hover {
+            background-color: #c9302c;
+        }
+        .button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #message {
+            text-align: center;
+            font-size: 18px;
+            color: #228B22;
+            margin-top: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        #progress {
+            width: 0%;
+            height: 100%;
+            background-color: #228B22;
+            border-radius: 5px;
+            transition: width 1s linear;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #228B22;
+            font-style: italic;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+            h1, h2 {
+                font-size: 18px;
+            }
+            .description {
+                font-size: 14px;
+            }
+            .clock {
+                width: 200px;
+                height: 200px;
+                margin: 20px auto;
+            }
+            .number {
+                font-size: 18px;
+            }
+            #start-button, #cancel-button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+            .progress-bar {
+                height: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💪🧠 Hagamos una última actividad para ejercitar nuestra mente 🧠💪</h1>
+        <h2>⏲ La técnica de los dos minutos ⏲</h2>
+        
+        <div class="description">
+            <p>🕰️ Necesitarás un reloj con segundero. El juego consiste en que centres tu atención única y exclusivamente en la aguja del segundero, siguiendo con la vista su recorrido alrededor de la esfera del reloj. Te verás al principio sorprendido pensando en otras cosas. Cuando esto te ocurra, vuelve a empezar de nuevo e intenta pensar y concentrarte sólo en la aguja del reloj. Deberás hacer el recorrido dos veces; es decir, dos minutos. 🎯</p>
+        </div>
+        
+        <div class="clock">
+            <div id="hour-hand" class="hand"></div>
+            <div id="minute-hand" class="hand"></div>
+            <div id="second-hand" class="hand"></div>
+            <div class="number" style="top: 10%; left: 50%; transform: translateX(-50%);">12</div>
+            <div class="number" style="top: 50%; right: 10%; transform: translateY(-50%);">3</div>
+            <div class="number" style="bottom: 10%; left: 50%; transform: translateX(-50%);">6</div>
+            <div class="number" style="top: 50%; left: 10%; transform: translateY(-50%);">9</div>
+        </div>
+
+        <div class="progress-bar">
+            <div id="progress"></div>
+        </div>
+
+        <div style="text-align: center;">
+            <button id="start-button" class="button">🚀 Iniciar ejercicio</button>
+            <button id="cancel-button" class="button">❌ Cancelar y reiniciar</button>
+        </div>
+        <div id="message"></div>
+
+        <div class="footer">
+            <p>🌟 Cuidarnos es responsabilidad de todos 🌟</p>
+            <p>🏢 COPASST - 2024 CÁMARA DE COMERCIO DE SINCELEJO 🏢</p>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🎉🎊 ¡Felicidades! Has completado el desafío de 2 minutos. 🎊🎉</h2>
+            <h3>🌈 Beneficios de esta actividad 🌈</h3>
+            <p>🧘‍♀️ Esta técnica de concentración, conocida como "mindfulness del reloj", ofrece numerosos beneficios para nuestra salud mental y bienestar general. Al practicarla regularmente, podemos:</p>
+            <ul>
+                <li>🧠 Mejorar nuestra capacidad de atención</li>
+                <li>😌 Reducir el estrés y la ansiedad</li>
+                <li>🌟 Aumentar la claridad mental</li>
+                <li>🏞️ Fomentar un estado de calma y presencia en el momento presente</li>
+            </ul>
+            <p>🚀 Además, este ejercicio nos ayuda a desarrollar la paciencia y la disciplina mental, habilidades valiosas en nuestra vida cotidiana y profesional. 💼</p>
+        </div>
+    </div>
+
+    <script>
+        const hourHand = document.getElementById('hour-hand');
+        const minuteHand = document.getElementById('minute-hand');
+        const secondHand = document.getElementById('second-hand');
+        const startButton = document.getElementById('start-button');
+        const cancelButton = document.getElementById('cancel-button');
+        const message = document.getElementById('message');
+        const progress = document.getElementById('progress');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.getElementsByClassName('close')[0];
+        let timerInterval;
+        let startTime;
+
+        function updateClock() {
+            const now = new Date();
+            const elapsedTime = (now - startTime) / 1000; // tiempo transcurrido en segundos
+            const seconds = elapsedTime % 60;
+            const minutes = Math.floor(elapsedTime / 60) % 60;
+            const hours = Math.floor(elapsedTime / 3600) % 12;
+
+            const secondDegrees = (seconds / 60) * 360;
+            const minuteDegrees = ((minutes + seconds / 60) / 60) * 360;
+            const hourDegrees = ((hours + minutes / 60) / 12) * 360;
+
+            secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+            minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+            hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+
+            progress.style.width = `${(elapsedTime / 120) * 100}%`;
+        }
+
+        function startChallenge() {
+            startTime = new Date();
+            startButton.disabled = true;
+            startButton.textContent = '⏳ Desafío en progreso...';
+            cancelButton.style.display = 'inline-block';
+            message.textContent = '🧘‍♀️ ¡Concéntrate en el segundero! 🧘‍♂️';
+
+            timerInterval = setInterval(() => {
+                updateClock();
+                const elapsedTime = new Date() - startTime;
+                if (elapsedTime >= 120000) {
+                    endChallenge();
+                }
+            }, 1000);
+        }
+
+        function endChallenge() {
+            clearInterval(timerInterval);
+            startButton.disabled = false;
+            startButton.textContent = '🔄 Intentar de nuevo';
+            cancelButton.style.display = 'none';
+            message.textContent = '';
+            modal.style.display = 'block';
+        }
+
+        function cancelChallenge() {
+            clearInterval(timerInterval);
+            startButton.disabled = false;
+            startButton.textContent = '🚀 Iniciar ejercicio';
+            cancelButton.style.display = 'none';
+            message.textContent = '';
+            progress.style.width = '0%';
+            resetClock();
+        }
+
+        function resetClock() {
+            hourHand.style.transform = 'rotate(0deg)';
+            minuteHand.style.transform = 'rotate(0deg)';
+            secondHand.style.transform = 'rotate(0deg)';
+        }
+
+        startButton.addEventListener('click', startChallenge);
+        cancelButton.addEventListener('click', cancelChallenge);
+
+        // Cerrar el modal
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        // Cerrar el modal si se hace clic fuera de él
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Inicializar el reloj en posición de inicio
+        resetClock();
+    </script>
+</body>
+</html>
